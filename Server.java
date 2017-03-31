@@ -31,6 +31,11 @@ public class Server implements RMIServerSocketFactory, Serializable{
 
 	public static void main(String args[]){
 		new Server();
+
+		// setupDB
+		DbHelper dbHelper = new DbHelper();
+		dbHelper.createTables();
+		dbHelper.closeConnection();
 	}
 
 	public ServerSocket createServerSocket(int port) throws IOException{
