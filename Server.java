@@ -32,6 +32,7 @@ public class Server implements RMIServerSocketFactory, Serializable{
 	private Server(){
 		try{
 			RegistryImpl impl = new RegistryImpl(5000);
+			RegistryImpl impl2 = new RegistryImpl(5001);
 		}
 		catch(RemoteException e){
 			System.out.println(e);
@@ -40,6 +41,9 @@ public class Server implements RMIServerSocketFactory, Serializable{
 		try{
 			ClientVotingInterface stub = (ClientVotingInterface) new ClientVotingRemote(5000);
 			Naming.rebind("rmi://localhost:5000/voting", stub);
+
+			AdminVotingInterface stub2 = (AdminVotingInterface) new AdminVotingRemote(5001);
+			Naming.rebind("rmi://localhost:5001/voting", stub2);
 			System.out.println("Server up.");
 		}
 		catch(Exception e){
