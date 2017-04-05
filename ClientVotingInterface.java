@@ -4,7 +4,8 @@ import java.rmi.*;
 
 public interface ClientVotingInterface extends Remote{
 
-	public ArrayList<Item> fetchItems() throws RemoteException;
+	public ArrayList<Candidate> fetchCandidates() throws RemoteException;
 
-	public int test() throws RemoteException;
+	public boolean castVote(String candidate) throws RemoteException;
+
 }
