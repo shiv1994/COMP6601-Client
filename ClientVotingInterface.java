@@ -8,4 +8,6 @@ public interface ClientVotingInterface extends Remote{
 
 	public boolean castVote(String candidate) throws RemoteException;
 
+	public boolean canVote() throws RemoteException;
+
 }

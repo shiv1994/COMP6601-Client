@@ -2,6 +2,7 @@ import java.io.*;
 import java.rmi.*;
 import java.rmi.server.*;
 import java.rmi.registry.*;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -48,6 +49,17 @@ public class ClientVotingRemote extends UnicastRemoteObject implements ClientVot
 
 		System.out.println("Voting period not yet open. Opens at: " + active.getStart());
 
+		return false;
+	}
+
+	public boolean canVote() throws RemoteException{
+		// returns true if the current time is within
+		Timestamp curr = new Timestamp(System.currentTimeMillis());
+
+		Timestamp currCampStartTime = Server.getActive().getStart();
+
+		if(!curr.before(currCampStartTime))
+			return true;
 		return false;
 	}
 }
