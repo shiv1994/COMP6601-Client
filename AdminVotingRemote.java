@@ -11,6 +11,7 @@ public class AdminVotingRemote extends UnicastRemoteObject implements AdminVotin
     }
 
     public boolean addCampaign(Campaign campaign) throws RemoteException{
+        System.out.println(campaign.toString());
         DbHelper dbHelper = new DbHelper();
         Boolean result = dbHelper.insertCampaign(campaign);
         dbHelper.closeConnection();

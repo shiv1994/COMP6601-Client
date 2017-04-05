@@ -1,8 +1,9 @@
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
-import java.rmi.Naming; 
-import java.rmi.RemoteException; 
+import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 import java.rmi.server.RMIServerSocketFactory;
 import java.util.Timer;
 import javax.net.ServerSocketFactory;
@@ -30,15 +31,17 @@ public class Server implements RMIServerSocketFactory, Serializable{
 
 	// private constructor to restrict instantiation to within this class
 	private Server(){
+
+//		try{
+//
+//		}
+//		catch(RemoteException e){
+//			System.out.println(e);
+//		}
+
 		try{
 			RegistryImpl impl = new RegistryImpl(5000);
 			RegistryImpl impl2 = new RegistryImpl(5001);
-		}
-		catch(RemoteException e){
-			System.out.println(e);
-		}
-
-		try{
 			ClientVotingInterface stub = (ClientVotingInterface) new ClientVotingRemote(5000);
 			Naming.rebind("rmi://localhost:5000/voting", stub);
 
