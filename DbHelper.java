@@ -105,7 +105,7 @@ public final class DbHelper{
             System.out.println("Tables already exist");
     }
 
-    public void insertCampaign(Campaign campaign){
+    public boolean insertCampaign(Campaign campaign){
         PreparedStatement pstmt = null;
 
         try{
@@ -138,9 +138,12 @@ public final class DbHelper{
                     insertCandidates(campaign.getCandidates(), genKey);
                 }
                 System.out.println("Campaign successfully added.");
+                return true;
             }
-            else
+            else{
                 System.out.println("Campaign cannot be added as it overlaps with the time period of another campaign");
+                return false;
+            }
         }
         catch(SQLException e){
             //System.out.println("SQL ERROR: " + e.getMessage());
@@ -156,6 +159,7 @@ public final class DbHelper{
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     public void insertCandidates(ArrayList<Candidate> list, int key){
