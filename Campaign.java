@@ -43,6 +43,10 @@ public class Campaign implements Serializable{
         setEnd(end);
         candidates = new ArrayList<>();
     }
+    public Campaign(){
+        candidates = new ArrayList<>();
+        candidates.add(new Candidate("test", "test", "test"));
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -76,10 +80,10 @@ public class Campaign implements Serializable{
         return candidates;
     }
 
-    public void addCandidate(Candidate candidate){
-        candidates.add(candidate);
+    public void addCandidate(String name, String description, String imageURL){
+        System.out.println(name);
+        candidates.add(new Candidate(name, description, imageURL));
     }
-
     public String toString(){
         String result = getName() + "\n" + getStart() + "\n" + getEnd() + "\n";
 

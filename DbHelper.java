@@ -232,9 +232,7 @@ public final class DbHelper{
                     String img = rs.getString(CandidateContract.IMG_URL_COL);
 
                     if(img != null)
-                        active.addCandidate(new Candidate(candName,desc,img));
-                    else
-                        active.addCandidate(new Candidate(candName,desc));
+                        active.addCandidate(candName,desc,img);
                 }
             }
         }
