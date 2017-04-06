@@ -325,7 +325,6 @@ public final class DbHelper{
                     pstmt.close();
             }
             catch (SQLException e){
-                //System.out.println(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -346,7 +345,7 @@ public final class DbHelper{
 
             ResultSet rs = pstmt.executeQuery();
 
-            int firstCheck=0, totalVotes=0, winId=0;
+            int firstCheck=0, totalVotes=0, winId=0, winVotes=0;
 
             // iterate through results of voting campaign and get data to add to history table
             while(rs.next()){
@@ -358,6 +357,7 @@ public final class DbHelper{
                 if(firstCheck == 0){
                     // this is the winner
                     winId = candID;
+                    winVotes = numVotes;
                     firstCheck = 1;
                 }
 
@@ -369,7 +369,8 @@ public final class DbHelper{
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1,activeCampId);
             pstmt.setInt(2,winId);
-            pstmt.setInt(3,totalVotes);
+            pstmt.setInt(3,winVotes);
+            pstmt.setInt(4,totalVotes);
 
             pstmt.executeUpdate();
 
@@ -383,7 +384,49 @@ public final class DbHelper{
                     pstmt.close();
             }
             catch (SQLException e){
-                //System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public ArrayList<Report> getReports(){
+        Statement stmt = null;
+        ArrayList<Report> report = new ArrayList<>();
+
+        try{
+            // add table identifiers
+            String sql = "SELECT " + "cam." + CampaignContract.NAME_COL + " can." + CandidateContract.NAME_COL + " " +
+                    HistoryContract.WIN_VOTES_COL + " " + HistoryContract.VOTES_CAST_COL + " FROM " + CampaignContract.TABLE_NAME +
+                    " cam " + CandidateContract.TABLE_NAME + " can " + HistoryContract.TABLE_NAME + " WHERE " +
+                    HistoryContract.ID_COL + " = " + CampaignContract.CAMP_ID_COL + " AND " + HistoryContract.WIN_COL +
+                    " = " + CandidateContract.CAND_ID_COL + " ORDER BY " + CampaignContract.END_COL + " ASC" + ";";
+
+            stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()){
+                String campName = rs.getString(1);
+                String candName = rs.getString(2);
+                int winVotes = rs.getInt(3);
+                int totVotes = rs.getInt(4);
+
+                Report temp = new Report(campName,candName,winVotes,totVotes);
+                report.add(temp);
+            }
+
+            return report;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return report;
+        }
+        finally {
+            try{
+                if(stmt != null)
+                    stmt.close();
+            }
+            catch (SQLException e){
                 e.printStackTrace();
             }
         }
